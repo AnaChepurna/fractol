@@ -28,9 +28,10 @@ typedef struct		s_mlx
 	void			*mlx;
 	void			*win;
 	void			*img;
+	int				*map;
 }					t_mlx;
 
-void			julia(double x, double y, t_mlx *mlx);
-void			mandelbrot(double x, double y, t_mlx *mlx);
+int			julia(t_vector2 vec, t_mlx *mlx);
+int			mandelbrot(t_vector2 vec, t_mlx *mlx);
 
 #endif
