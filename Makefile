@@ -12,18 +12,10 @@
 
 CC = gcc
 CFLAG = -Wall -Wextra -Werror
-NAME = fdf
-INCL = fdf.h
-SRC_DIR = src/
-FILES = main.c \
-		parse.c \
-		memory.c \
-		key.c \
-		draw.c \
-		axises.c \
-		color.c \
-		new.c
-SRC = $(addprefix $(SRC_DIR), $(FILES))
+NAME = fractol
+INCL = fractol.h
+SRC = 	main.c \
+		fractols.c
 OBJ = $(SRC:.c=.o)
 LIB = libft/libft.a
 LIB_LNK = -L libft/ -lft
