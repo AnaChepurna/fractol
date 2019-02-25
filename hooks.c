@@ -8,12 +8,13 @@ int mouse_hook(int button, int x, int y, void *param) {
 	if (button == 4 || button == 5) {
 		i = -1;
 		while (++i < TNUM) {
-			mlx->imgs[i].shift.x += (WIN_X / 2 - x) / 10 * atan(mlx->imgs[i].zoom);
-			mlx->imgs[i].shift.y += (WIN_Y / 2 - y) / 10 * atan(mlx->imgs[i].zoom);
 			if (button == 4 && mlx->imgs[i].zoom > 0)
 				mlx->imgs[i].zoom /= 1.1;
-			else if (button == 5)
+			else if (button == 5) {
 				mlx->imgs[i].zoom *= 1.1;
+				mlx->imgs[i].shift.x += (WIN_X / 2 - x) / 10 * atan(mlx->imgs[i].zoom);
+				mlx->imgs[i].shift.y += (WIN_Y / 2 - y) / 10 * atan(mlx->imgs[i].zoom);
+			}
 		}
 	}
 	create_fractol(mlx);

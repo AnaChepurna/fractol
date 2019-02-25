@@ -19,7 +19,7 @@ int			mandelbrot(t_vector2 vec, t_img *img) {
 		z.im = 2 * tmp * z.im + c.im;
 		res++;
 	}
-	return (res << 4);
+	return (res << 2);
 }
 
 int			julia(t_vector2 vec, t_img *img) {
