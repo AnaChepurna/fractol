@@ -25,7 +25,7 @@ MLX_LNK = -L minilibx_macos/ -lmlx -framework OpenGL -framework AppKit
 all: $(NAME)
 
 $(NAME): $(LIB) $(MLX) $(OBJ)
-	$(CC) $(OBJ) $(LIB_LNK) $(MLX_LNK) -o $(NAME)
+	$(CC) $(OBJ) $(LIB_LNK) -lpthread $(MLX_LNK) -o $(NAME)
 
 %.o: %.c $(INCL)
 	$(CC) -c $(CFLAG) $< -o $@
