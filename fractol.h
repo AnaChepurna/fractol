@@ -3,8 +3,11 @@
 
 # include "libft/libft.h"
 # include "minilibx_macos/mlx.h"
+# include <sys/mman.h>
 # include <fcntl.h>
 # include <math.h>
+# include <stdio.h>
+# include <pthread.h>
 
 #define WIN_X 1000
 #define WIN_Y 600
@@ -19,19 +22,26 @@ typedef struct		s_complex
 
 typedef struct 		s_vector2
 {
-	double			x;
-	double			y;
+	int				x;
+	int				y;
 }					t_vector2;
+
+typedef struct		s_img
+{
+	void			*img;
+	int				*map;
+	int 			(*fractol)(t_vector2, struct s_img *);
+	int				y;
+}					t_img;
 
 typedef struct		s_mlx
 {
 	void			*mlx;
 	void			*win;
-	void			*img;
-	int				*map;
+	t_img			*imgs;
 }					t_mlx;
 
-int			julia(t_vector2 vec, t_mlx *mlx);
-int			mandelbrot(t_vector2 vec, t_mlx *mlx);
+int			julia(t_vector2 vec, t_img *img);
+int			mandelbrot(t_vector2 vec, t_img *img);
 
 #endif

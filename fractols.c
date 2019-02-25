@@ -1,12 +1,12 @@
 #include "fractol.h"
 
-int			mandelbrot(t_vector2 vec, t_mlx *mlx) {
+int			mandelbrot(t_vector2 vec, t_img *img) {
 	(void)vec;
-	(void)mlx;
+	(void)img;
 	return 0;
 }
 
-int			julia(t_vector2 vec, t_mlx *mlx) {
+int			julia(t_vector2 vec, t_img *img) {
 	int res;
 	t_complex z;
 	double tmp;
@@ -21,6 +21,6 @@ int			julia(t_vector2 vec, t_mlx *mlx) {
 	// 	z.im = 2 * tmp * z.im + 0 / 800;
 	// 	res++;
 	// }
-	(void)mlx;
+	(void)img;
 	return res;
 }

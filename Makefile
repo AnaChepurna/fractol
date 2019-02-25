@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = gcc
-CFLAG = -Wall -Wextra -Werror
+CFLAG = #-Wall -Wextra -Werror
 NAME = fractol
 INCL = fractol.h
 SRC = 	main.c \
