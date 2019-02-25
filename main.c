@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
+static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
 	int sbe[3];
 	int i;
 
@@ -15,11 +15,14 @@ void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
 				&sbe[1], &sbe[2]);
 			mlx->imgs[i].y = i * WIN_Y / TNUM;
 			mlx->imgs[i].fractol = fractol;
+			mlx->imgs[i].shift.x = 500;
+			mlx->imgs[i].shift.y = 300;
+			mlx->imgs[i].zoom = 1;
 		}
 	}
 }
 
-void *create_fractol(void *img_void) {
+static void *draw_fractol(void *img_void) {
 	t_vector2 vec;
 	t_img *img;
 
@@ -33,27 +36,35 @@ void *create_fractol(void *img_void) {
 	return (NULL);
 }
 
-void run_fractol(char *fractol_name) {
+void create_fractol(t_mlx *mlx) {
+	pthread_t tids[TNUM];
+	int i;
+
+	i = -1;
+	while (++i < TNUM)
+		pthread_create(&tids[i], NULL, draw_fractol, &(mlx->imgs[i]));
+	while (i--)
+		pthread_join(tids[i], NULL);
+	while (++i < TNUM)
+		mlx_put_image_to_window(mlx->mlx, mlx->win,
+			mlx->imgs[i].img, 0, mlx->imgs[i].y);
+}
+
+static void run_fractol(char *fractol_name) {
 	static char *fractols[FNUM] = {"Mandelbrot", "Julia"};
 	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia};
-	pthread_t tids[TNUM];
 	t_mlx mlx;
-	t_vector2 vec;
+	int i;
 
-	vec.x = -1;
-	while (++(vec.x) < FNUM)
+	i = -1;
+	while (++i < FNUM)
 	{
-		if (ft_strequ(fractols[vec.x], fractol_name))
+		if (ft_strequ(fractols[i], fractol_name))
 		{
-			init(&mlx, fractol_name, f[vec.x]);
-			vec.y = -1;
-			while (++(vec.y) < TNUM)
-				pthread_create(&tids[vec.y], NULL, create_fractol, &(mlx.imgs[vec.y]));
-			while ((vec.y)--)
-				pthread_join(tids[vec.y], NULL);
-			while (++(vec.y) < TNUM)
-				mlx_put_image_to_window(mlx.mlx, mlx.win,
-					mlx.imgs[vec.y].img, 0, mlx.imgs[vec.y].y);
+			init(&mlx, fractol_name, f[i]);
+			mlx_hook(mlx.win, 2, 1L << 0, key_hook, &mlx);
+			mlx_mouse_hook(mlx.win, mouse_hook, &mlx);
+			create_fractol(&mlx);
 			mlx_loop(mlx.mlx);
 			break;
 		}

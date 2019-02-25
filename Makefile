@@ -15,7 +15,8 @@ CFLAG = #-Wall -Wextra -Werror
 NAME = fractol
 INCL = fractol.h
 SRC = 	main.c \
-		fractols.c
+		fractols.c \
+		hooks.c
 OBJ = $(SRC:.c=.o)
 LIB = libft/libft.a
 LIB_LNK = -L libft/ -lft
@@ -38,7 +39,7 @@ clean:
 fclean: clean
 	make -C libft/ fclean
 	rm -rf $(NAME)
-	#make -C minilibx_macos fclean
+	make -C minilibx_macos fclean
 
 $(MLX):
 	make -C minilibx_macos

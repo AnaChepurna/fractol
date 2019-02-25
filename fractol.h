@@ -9,7 +9,7 @@
 # include <stdio.h>
 # include <pthread.h>
 
-#define WIN_X 1000
+#define WIN_X 800
 #define WIN_Y 600
 #define FNUM 2
 #define TNUM 10
@@ -32,6 +32,8 @@ typedef struct		s_img
 	int				*map;
 	int 			(*fractol)(t_vector2, struct s_img *);
 	int				y;
+	t_vector2		shift;
+	double			zoom;
 }					t_img;
 
 typedef struct		s_mlx
@@ -41,7 +43,10 @@ typedef struct		s_mlx
 	t_img			*imgs;
 }					t_mlx;
 
+void 		create_fractol(t_mlx *mlx);
 int			julia(t_vector2 vec, t_img *img);
 int			mandelbrot(t_vector2 vec, t_img *img);
+int 		mouse_hook(int button, int x, int y, void *param);
+int 		key_hook(int keycode, void *param);
 
 #endif
