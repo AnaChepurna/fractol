@@ -42,3 +42,27 @@ int			julia(t_vector2 vec, t_img *img) {
 		return (res << 2 | res << 19);
 	return (res << 2);
 }
+
+int			 sinus(t_vector2 vec, t_img *img) {
+	int res;
+	t_complex z;
+	double tmp;
+
+	res = 0;
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
+	{
+		tmp = z.re;
+		z.re = sin(z.re) * cosh(z.im) * 1.5;
+		z.im = cos(tmp) * sinh(z.im) * 1.5;
+		res++;
+	}
+	if (img->color)
+		return (res << 2 | res << 19);
+	return (res << 2);
+}
+
+int			 cosinus(t_vector2 vec, t_img *img) {
+	return 1;
+}

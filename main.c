@@ -54,8 +54,8 @@ void create_fractol(t_mlx *mlx) {
 }
 
 static void run_fractol(char *fractol_name) {
-	static char *fractols[FNUM] = {"Mandelbrot", "Julia"};
-	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia};
+	static char *fractols[FNUM] = {"Mandelbrot", "Julia", "sin"};
+	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia, sinus};
 	t_mlx mlx;
 	int i;
 
