@@ -18,6 +18,8 @@ int			mandelbrot(t_vector2 vec, t_img *img) {
 		z.im = 2 * tmp * z.im + c.im;
 		res++;
 	}
+	if (img->color)
+		return (res << 2 | res << 9 | res << 20);
 	return (res << 2);
 }
 
@@ -27,14 +29,16 @@ int			julia(t_vector2 vec, t_img *img) {
 	double tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - 500 - img->shift.re * img->zoom) / (img->zoom * 200);
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
 	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
 	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
 	{
 		tmp = z.re;
-		z.re = z.re * z.re - z.im * z.im - 0.9 + 0.01750;
-		z.im = 2 * tmp * z.im - 0.9 + 0.01750;
+		z.re = z.re * z.re - z.im * z.im - img->coords.re;
+		z.im = 2 * tmp * z.im + img->coords.im;
 		res++;
 	}
-	return (res << 4);
+	if (img->color)
+		return (res << 2 | res << 19);
+	return (res << 2);
 }

@@ -33,7 +33,9 @@ typedef struct		s_img
 	int 			(*fractol)(t_vector2, struct s_img *);
 	int				y;
 	t_complex		shift;
+	t_complex		coords;
 	double			zoom;
+	int				color;
 }					t_img;
 
 typedef struct		s_mlx
@@ -48,5 +50,6 @@ int			julia(t_vector2 vec, t_img *img);
 int			mandelbrot(t_vector2 vec, t_img *img);
 int 		mouse_hook(int button, int x, int y, void *param);
 int 		key_hook(int keycode, void *param);
+int 		mouse_coords_hook(int x, int y, void *param);
 
 #endif

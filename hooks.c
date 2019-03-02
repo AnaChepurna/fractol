@@ -5,11 +5,9 @@ int mouse_hook(int button, int x, int y, void *param) {
 	int i;
 
 	mlx = (t_mlx *)param;
-	if (button == 4 || button == 5) {
+	if (button == 4 || button == 5 || button == 1) {
 		i = -1;
 		while (++i < TNUM) {
-			// mlx->imgs[i].shift.x += (WIN_X / 2 - x) / 10 / (mlx->imgs[i].zoom);
-			// mlx->imgs[i].shift.y += (WIN_Y / 2 - y) / 10 / (mlx->imgs[i].zoom);
 			if (button == 4) {
 				mlx->imgs[i].zoom /= 1.1;
 				if (mlx->imgs[i].zoom == 0.0)
@@ -18,6 +16,8 @@ int mouse_hook(int button, int x, int y, void *param) {
 			else if (button == 5) {
 				mlx->imgs[i].zoom *= 1.1;
 			}
+			else if (button == 1)
+				mlx->imgs[i].color = !mlx->imgs[i].color;
 		}
 	}
 	create_fractol(mlx);
@@ -41,5 +41,21 @@ int key_hook(int keycode, void *param) {
 			mlx->imgs[i].shift.im += 10 / mlx->imgs[i].zoom;
 	}
 	create_fractol(mlx);
-	return 0;
+	return 1;
+}
+
+int mouse_coords_hook(int x, int y, void *param) {
+	t_mlx *mlx;
+	int i;
+
+	mlx = (t_mlx *)param;
+	i = -1;
+	while (++i < TNUM) {
+		if (x >= 0 && y >= 0 && x < WIN_X && y < WIN_Y) {
+			mlx->imgs[i].coords.re = (double)x / WIN_X;
+			mlx->imgs[i].coords.im = (double)y / WIN_Y;
+		}
+	}
+	create_fractol(mlx);
+	return 1;
 }

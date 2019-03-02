@@ -18,6 +18,9 @@ static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
 			mlx->imgs[i].shift.re = 0;
 			mlx->imgs[i].shift.im = 0;
 			mlx->imgs[i].zoom = 1;
+			mlx->imgs[i].coords.re = 0.3;
+			mlx->imgs[i].coords.im = 0.6;
+			mlx->imgs[i].color = 0;
 		}
 	}
 }
@@ -63,6 +66,7 @@ static void run_fractol(char *fractol_name) {
 		{
 			init(&mlx, fractol_name, f[i]);
 			mlx_hook(mlx.win, 2, 1L << 0, key_hook, &mlx);
+			mlx_hook(mlx.win, 6, 1L << 6, mouse_coords_hook, &mlx);
 			mlx_mouse_hook(mlx.win, mouse_hook, &mlx);
 			create_fractol(&mlx);
 			mlx_loop(mlx.mlx);
