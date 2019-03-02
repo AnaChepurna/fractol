@@ -15,8 +15,8 @@ static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
 				&sbe[1], &sbe[2]);
 			mlx->imgs[i].y = i * WIN_Y / TNUM;
 			mlx->imgs[i].fractol = fractol;
-			mlx->imgs[i].shift.x = 500;
-			mlx->imgs[i].shift.y = 300;
+			mlx->imgs[i].shift.re = 0;
+			mlx->imgs[i].shift.im = 0;
 			mlx->imgs[i].zoom = 1;
 		}
 	}

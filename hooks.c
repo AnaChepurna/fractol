@@ -8,12 +8,15 @@ int mouse_hook(int button, int x, int y, void *param) {
 	if (button == 4 || button == 5) {
 		i = -1;
 		while (++i < TNUM) {
-			if (button == 4 && mlx->imgs[i].zoom > 0)
+			// mlx->imgs[i].shift.x += (WIN_X / 2 - x) / 10 / (mlx->imgs[i].zoom);
+			// mlx->imgs[i].shift.y += (WIN_Y / 2 - y) / 10 / (mlx->imgs[i].zoom);
+			if (button == 4) {
 				mlx->imgs[i].zoom /= 1.1;
+				if (mlx->imgs[i].zoom == 0.0)
+					mlx->imgs[i].zoom = 0.1;
+			}
 			else if (button == 5) {
 				mlx->imgs[i].zoom *= 1.1;
-				mlx->imgs[i].shift.x += (WIN_X / 2 - x) / 10 * atan(mlx->imgs[i].zoom);
-				mlx->imgs[i].shift.y += (WIN_Y / 2 - y) / 10 * atan(mlx->imgs[i].zoom);
 			}
 		}
 	}
@@ -29,13 +32,13 @@ int key_hook(int keycode, void *param) {
 	i = -1;
 	while (++i < TNUM) {
 		if (keycode == 124)
-			mlx->imgs[i].shift.x -= 10 * atan(mlx->imgs[i].zoom);
+			mlx->imgs[i].shift.re -= 10 / mlx->imgs[i].zoom;
 		else if (keycode == 123)
-			mlx->imgs[i].shift.x += 10 * atan(mlx->imgs[i].zoom);
+			mlx->imgs[i].shift.re += 10 / mlx->imgs[i].zoom;
 		else if (keycode == 125)
-			mlx->imgs[i].shift.y -= 10 * atan(mlx->imgs[i].zoom);
+			mlx->imgs[i].shift.im -= 10 / mlx->imgs[i].zoom;
 		else if (keycode == 126)
-			mlx->imgs[i].shift.y += 10 * atan(mlx->imgs[i].zoom);
+			mlx->imgs[i].shift.im += 10 / mlx->imgs[i].zoom;
 	}
 	create_fractol(mlx);
 	return 0;

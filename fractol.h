@@ -32,7 +32,7 @@ typedef struct		s_img
 	int				*map;
 	int 			(*fractol)(t_vector2, struct s_img *);
 	int				y;
-	t_vector2		shift;
+	t_complex		shift;
 	double			zoom;
 }					t_img;
 

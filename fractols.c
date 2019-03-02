@@ -7,11 +7,10 @@ int			mandelbrot(t_vector2 vec, t_img *img) {
 	double tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - img->shift.x) / (img->zoom * 200);
-	z.im = ((double)vec.y - img->shift.y) / (img->zoom * 200);
+	z.re = ((double)vec.x - 500 - img->shift.re * img->zoom) / (img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
 	c.re = z.re;
 	c.im = z.im;
-	//printf("%f, %f\n", z.re, z.im);
 	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
 	{
 		tmp = z.re;
@@ -28,15 +27,14 @@ int			julia(t_vector2 vec, t_img *img) {
 	double tmp;
 
 	res = 0;
-	z.re = (vec.x + 0 - 400) / 200;
-	z.im = (vec.y + 0 - 400) / -200;
-	while (res < 256 && z.re * z.re + z.im * z.im < 4)
+	z.re = ((double)vec.x - 500 - img->shift.re * img->zoom) / (img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
 	{
-	 	tmp = z.re;
-		z.re = z.re * z.re - z.im * z.im - 0.8 + 0 / 800;
-		z.im = 2 * tmp * z.im + 0 / 800;
+		tmp = z.re;
+		z.re = z.re * z.re - z.im * z.im - 0.9 + 0.01750;
+		z.im = 2 * tmp * z.im - 0.9 + 0.01750;
 		res++;
 	}
-	(void)img;
-	return res;
+	return (res << 4);
 }
