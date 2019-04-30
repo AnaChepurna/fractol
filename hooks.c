@@ -29,8 +29,14 @@ int key_hook(int keycode, void *param) {
 	int i;
 
 	mlx = (t_mlx *)param;
+	if (keycode == 53)
+	{
+		exit(0);
+		free(mlx->imgs);
+	}
 	i = -1;
-	while (++i < TNUM) {
+	while (++i < TNUM)
+	{
 		if (keycode == 124)
 			mlx->imgs[i].shift.re -= 10 / mlx->imgs[i].zoom;
 		else if (keycode == 123)

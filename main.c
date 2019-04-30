@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
+ static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
 	int sbe[3];
 	int i;
 
@@ -53,16 +53,17 @@ void create_fractol(t_mlx *mlx) {
 			mlx->imgs[i].img, 0, mlx->imgs[i].y);
 }
 
-static void run_fractol(char *fractol_name) {
-	static char *fractols[FNUM] = {"Mandelbrot", "Julia", "sin"};
-	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia, sinus};
+static void *run_fractol(void *fractol_name) {
+	static char *fractols[FNUM] = {"Mandelbrot", "Julia", "sin", "cos"};
+	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia, sinus, cosinus};
 	t_mlx mlx;
 	int i;
 
+	printf("%s\n", (char *)fractol_name);
 	i = -1;
 	while (++i < FNUM)
 	{
-		if (ft_strequ(fractols[i], fractol_name))
+		if (ft_strequ(fractols[i], (char *)fractol_name))
 		{
 			init(&mlx, fractol_name, f[i]);
 			mlx_hook(mlx.win, 2, 1L << 0, key_hook, &mlx);
@@ -73,31 +74,33 @@ static void run_fractol(char *fractol_name) {
 			break;
 		}
 	}
+	return NULL;
 }
 
 int main(int c, char **v) {
+
 	int i;
-	pid_t *pids;
-	t_mlx mlx;
+	// pid_t *pids;
+	// t_mlx mlx;
 
 	i = 0;
-	if (c < 2) {
-		ft_putstr("usage : ");
-		ft_putstr(v[0]);
-		ft_putstr(" [fractol name] ...\n");
-		exit(0);
-	}
-	if ((pids = (pid_t *)malloc(sizeof(pid_t) * (c - 1))))
-	{
+	// if (c < 2) {
+	// 	ft_putstr("usage : ");
+	// 	ft_putstr(v[0]);
+	// 	ft_putstr(" [fractol name] ...\n");
+	// 	exit(0);
+	// }
+	// if ((pids = (pid_t *)malloc(sizeof(pid_t) * (c - 1))))
+	// {
 		while (++i < c)
 		{
-			if (!(pids[i - 1] = fork())) {
-				run_fractol(v[1]);
+			//if (!(pids[i - 1] = fork())) {
+				run_fractol(v[i]);
 				exit (0);
-			}
+			//}
 		}
-		while (i-- > 0)
-			wait(&pids[i]);
-	}
-	free(pids);
+	// 	while (i-- > 0)
+	// 		wait(&pids[i]);
+	// }
+	// free(pids);
 }

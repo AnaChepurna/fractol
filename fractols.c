@@ -51,7 +51,7 @@ int			 sinus(t_vector2 vec, t_img *img) {
 	res = 0;
 	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
 	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
-	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
+	while (res < 50 && fabs(z.re * z.re + z.im * z.im) < 40)
 	{
 		tmp = z.re;
 		z.re = sin(z.re) * cosh(z.im) * 1.5;
@@ -59,10 +59,28 @@ int			 sinus(t_vector2 vec, t_img *img) {
 		res++;
 	}
 	if (img->color)
-		return (res << 2 | res << 19);
-	return (res << 2);
+		return (res << 6 | res << 11);
+	return (res << 4);
 }
 
+
+
 int			 cosinus(t_vector2 vec, t_img *img) {
-	return 1;
+	int res;
+	t_complex z;
+	double tmp;
+
+	res = 0;
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	while (res < 50 && fabs(z.re * z.re + z.im * z.im) < 40)
+	{
+		tmp = z.re;
+		z.re = cos(z.re) * cosh(z.im) * 1.5;
+		z.im = sin(tmp) * sinh(z.im) * 1.5 * -1;
+		res++;
+	}
+	if (img->color)
+		return (res << 8 | res << 16 | res << 21);
+	return (res << 4);
 }
