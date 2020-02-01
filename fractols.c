@@ -1,14 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scout.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achepurn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/01 13:54:22 by achepurn          #+#    #+#             */
+/*   Updated: 2018/09/01 13:54:24 by achepurn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
-int			mandelbrot(t_vector2 vec, t_img *img) {
-	int res;
-	t_complex z;
-	t_complex c;
-	double tmp;
+int			mandelbrot(t_vector2 vec, t_img *img)
+{
+	int			res;
+	t_complex	z;
+	t_complex	c;
+	double		tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - 500 - img->shift.re * img->zoom) / (img->zoom * 200);
-	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	z.re = ((double)vec.x - 500 - img->shift.re * img->zoom) /
+	(img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) /
+	(img->zoom * 200);
 	c.re = z.re;
 	c.im = z.im;
 	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
@@ -23,14 +38,17 @@ int			mandelbrot(t_vector2 vec, t_img *img) {
 	return (res << 2);
 }
 
-int			julia(t_vector2 vec, t_img *img) {
-	int res;
-	t_complex z;
-	double tmp;
+int			julia(t_vector2 vec, t_img *img)
+{
+	int			res;
+	t_complex	z;
+	double		tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
-	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) /
+	(img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) /
+	(img->zoom * 200);
 	while (res < 256 && fabs(z.re * z.re + z.im * z.im) < 4)
 	{
 		tmp = z.re;
@@ -43,14 +61,17 @@ int			julia(t_vector2 vec, t_img *img) {
 	return (res << 2);
 }
 
-int			 sinus(t_vector2 vec, t_img *img) {
-	int res;
-	t_complex z;
-	double tmp;
+int			sinus(t_vector2 vec, t_img *img)
+{
+	int			res;
+	t_complex	z;
+	double		tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
-	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) /
+	(img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) /
+	(img->zoom * 200);
 	while (res < 50 && fabs(z.re * z.re + z.im * z.im) < 40)
 	{
 		tmp = z.re;
@@ -63,16 +84,17 @@ int			 sinus(t_vector2 vec, t_img *img) {
 	return (res << 4);
 }
 
-
-
-int			 cosinus(t_vector2 vec, t_img *img) {
-	int res;
-	t_complex z;
-	double tmp;
+int			cosinus(t_vector2 vec, t_img *img)
+{
+	int			res;
+	t_complex	z;
+	double		tmp;
 
 	res = 0;
-	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) / (img->zoom * 200);
-	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) / (img->zoom * 200);
+	z.re = ((double)vec.x - 400 - img->shift.re * img->zoom) /
+	(img->zoom * 200);
+	z.im = ((double)vec.y - 300 - img->shift.im * img->zoom) /
+	(img->zoom * 200);
 	while (res < 50 && fabs(z.re * z.re + z.im * z.im) < 40)
 	{
 		tmp = z.re;

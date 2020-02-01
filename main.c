@@ -1,18 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scout.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achepurn <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/01 13:54:22 by achepurn          #+#    #+#             */
+/*   Updated: 2018/09/01 13:54:24 by achepurn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
- static void init(t_mlx *mlx, char *name, int (*fractol)(t_vector2, t_img *)) {
-	int sbe[3];
-	int i;
+static void		init(t_mlx *mlx, char *name,
+	int (*fractol)(t_vector2 a, t_img *b))
+{
+	int	sbe[3];
+	int	i;
 
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, WIN_X, WIN_Y, name);
-	if ((mlx->imgs = (t_img *)malloc(sizeof(t_img) * TNUM))) {
+	if ((mlx->imgs = (t_img *)malloc(sizeof(t_img) * TNUM)))
+	{
 		i = -1;
 		while (++i < TNUM)
 		{
 			mlx->imgs[i].img = mlx_new_image(mlx->mlx, WIN_X, WIN_Y / TNUM);
-			mlx->imgs[i].map = (int*)mlx_get_data_addr(mlx->imgs[i].img, &sbe[0],
-				&sbe[1], &sbe[2]);
+			mlx->imgs[i].map = (int*)mlx_get_data_addr(mlx->imgs[i].img,
+				&sbe[0], &sbe[1], &sbe[2]);
 			mlx->imgs[i].y = i * WIN_Y / TNUM;
 			mlx->imgs[i].fractol = fractol;
 			mlx->imgs[i].shift.re = 0;
@@ -25,13 +40,15 @@
 	}
 }
 
-static void *draw_fractol(void *img_void) {
-	t_vector2 vec;
-	t_img *img;
+static void		*draw_fractol(void *img_void)
+{
+	t_vector2	vec;
+	t_img		*img;
 
 	img = (t_img *)img_void;
 	vec.x = -1;
-	while (++(vec.x) < WIN_X) {
+	while (++(vec.x) < WIN_X)
+	{
 		vec.y = img->y - 1;
 		while (++(vec.y) < img->y + WIN_Y / TNUM)
 			img->map[(vec.y - img->y) * WIN_X + vec.x] = img->fractol(vec, img);
@@ -39,9 +56,10 @@ static void *draw_fractol(void *img_void) {
 	return (NULL);
 }
 
-void create_fractol(t_mlx *mlx) {
-	pthread_t tids[TNUM];
-	int i;
+void			create_fractol(t_mlx *mlx)
+{
+	pthread_t	tids[TNUM];
+	int			i;
 
 	i = -1;
 	while (++i < TNUM)
@@ -53,13 +71,15 @@ void create_fractol(t_mlx *mlx) {
 			mlx->imgs[i].img, 0, mlx->imgs[i].y);
 }
 
-static void *run_fractol(void *fractol_name) {
-	static char *fractols[FNUM] = {"Mandelbrot", "Julia", "sin", "cos"};
-	static int (*f[FNUM])(t_vector2, t_img *) = {mandelbrot, julia, sinus, cosinus};
-	t_mlx mlx;
-	int i;
+static void		*run_fractol(void *fractol_name)
+{
+	static char		*fractols[FNUM] = {"Mandelbrot", "Julia", "sin", "cos"};
+	static int		(*f[FNUM])(t_vector2, t_img *) =
+	{mandelbrot, julia, sinus, cosinus};
+	t_mlx			mlx;
+	int				i;
 
-	printf("%s\n", (char *)fractol_name);
+	ft_putendl((char *)fractol_name);
 	i = -1;
 	while (++i < FNUM)
 	{
@@ -71,36 +91,37 @@ static void *run_fractol(void *fractol_name) {
 			mlx_mouse_hook(mlx.win, mouse_hook, &mlx);
 			create_fractol(&mlx);
 			mlx_loop(mlx.mlx);
-			break;
+			break ;
 		}
 	}
-	return NULL;
+	return (NULL);
 }
 
-int main(int c, char **v) {
-
-	int i;
-	// pid_t *pids;
-	// t_mlx mlx;
+int				main(int c, char **v)
+{
+	int		i;
+	pid_t	*pids;
+	t_mlx	mlx;
 
 	i = 0;
-	// if (c < 2) {
-	// 	ft_putstr("usage : ");
-	// 	ft_putstr(v[0]);
-	// 	ft_putstr(" [fractol name] ...\n");
-	// 	exit(0);
-	// }
-	// if ((pids = (pid_t *)malloc(sizeof(pid_t) * (c - 1))))
-	// {
+	if (c < 2)
+	{
+		ft_putstr(v[0]);
+		ft_putstr(" [fractol name] ...\n");
+		exit(0);
+	}
+	if ((pids = (pid_t *)malloc(sizeof(pid_t) * (c - 1))))
+	{
 		while (++i < c)
 		{
-			//if (!(pids[i - 1] = fork())) {
+			if (!(pids[i - 1] = fork()))
+			{
 				run_fractol(v[i]);
-				exit (0);
-			//}
+				exit(0);
+			}
 		}
-	// 	while (i-- > 0)
-	// 		wait(&pids[i]);
-	// }
-	// free(pids);
+		while (i-- > 0)
+			wait(&pids[i]);
+		free(pids);
+	}
 }
